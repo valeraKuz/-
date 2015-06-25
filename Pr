@@ -1,0 +1,72 @@
+#include <iostream>
+#include <fstream>
+#include <ctype.h>
+
+using namespace std;
+
+
+
+fstream fOut("Praktika_DINR_11_Kuznetsov.txt", ios::out);
+fstream fIn("In.txt", ios::in);
+
+enum State
+{
+	POINT_STATE,
+	M1_STATE,
+	M2_STATE,
+
+	EMPTY_STATE
+};
+struct Point
+{
+	int x;
+	int y;
+};
+int main()
+{
+	State state = EMPTY_STATE;
+	Point M1[10], M2[10], *p1 = M1, *p2 = M2;
+	char c;
+	int coord = 1;
+
+	while (!fIn.eof())
+	{
+		fIn >> c;
+		if (c == '{')
+		{
+			if (state == EMPTY_STATE)
+				state = M1_STATE;
+			else if (state = M1_STATE)
+				state = M2_STATE;			
+		}
+		if (state == M1_STATE)
+		{
+			if (isdigit(c) && (coord == 1) )
+			{
+				p1->x = c - '0';
+				coord = 2;
+			}
+			else if (isdigit(c) && (coord == 2))
+			{
+				p1->y = c - '0';
+				coord = 1;
+				p1++;
+			}
+		}
+		if (state == M2_STATE)
+		{
+			if (isdigit(c) && (coord == 1))
+			{
+				p2->x = c - '0';
+				coord = 2;
+			}
+			else if (isdigit(c) && (coord == 2))
+			{
+				p2->y = c - '0';
+				coord = 1;
+				p2++;
+			}
+		}		
+	}
+	return 0;
+}
